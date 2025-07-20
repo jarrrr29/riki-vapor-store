@@ -1,24 +1,25 @@
 {
+    "version": 2,
     "builds": [
         {
-            "src": "/public/index.php",
-            "use": "vercel-php@0.6.0"
+            "src": "public/index.php",
+            "use": "@vercel/php"
         }
     ],
     "routes": [
         {
-            "src": "/(build|storage|image|vendor)/.*",
-            "dest": "/public/$0"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
-            "dest": "/public/index.php"
+            "dest": "public/index.php"
         }
     ],
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://nama-proyek-anda.vercel.app",
+        "APP_URL": "https://riki-vapor-store.vercel.app",
+        "APP_KEY": "@app-key",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
         "APP_PACKAGES_CACHE": "/tmp/packages.php",
@@ -27,6 +28,8 @@
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
-        "SESSION_DRIVER": "cookie"
+        "SESSION_DRIVER": "cookie",
+        "DB_CONNECTION": "sqlite",
+        "DB_DATABASE": "/tmp/database.sqlite"
     }
 }
