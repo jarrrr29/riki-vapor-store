@@ -5,10 +5,12 @@
     <title>Riki Vapor</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdn.tailwindcss.com"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="//unpkg.com/alpinejs" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     
     @stack('styles')
 </head>
@@ -74,8 +76,9 @@
     </footer>
 
     {{-- Floating Cart Button (FAB) --}}
-    @if(Request::is('pembelian') || Request::is('keranjang'))
-    <a href="/keranjang" x-data="{ cartCount: Number(localStorage.getItem('cartCount') || 0) }"
+    @if(Request::is('pembelian'))
+    {{-- PERUBAHAN UTAMA ADA DI BARIS DI BAWAH INI --}}
+    <a href="/keranjang" x-data="{ cartCount: {{ array_sum(array_column(session('cart', []), 'quantity')) }} }"
        @cart-updated.window="cartCount = $event.detail.cartCount;"
        x-show="true"
        class="fixed bottom-8 right-8 z-50 transform hover:scale-110 transition-transform duration-200 bg-transparent"

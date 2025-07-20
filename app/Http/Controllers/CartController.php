@@ -15,6 +15,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = session()->get('cart', []);
+        
         $totalPrice = 0;
 
         foreach ($cartItems as $item) {
@@ -154,4 +155,10 @@ class CartController extends Controller
             'totalPrice' => $totalPrice,
         ]);
     }
+    public function clear(Request $request)
+{
+    $request->session()->forget('cart');
+
+    return response()->json(['success' => true, 'message' => 'Keranjang telah dikosongkan.']);
+}
 }

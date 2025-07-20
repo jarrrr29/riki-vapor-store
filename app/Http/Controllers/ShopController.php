@@ -7,15 +7,26 @@ use App\Models\Product;
 
 class ShopController extends Controller
 {
-    public function index()
+     public function index()
     {
         $produk = Product::all();
         $kategoriProduk = $produk->groupBy('kategori');
 
-        // Ambil jumlah total kuantitas item di keranjang dari session
+        // AMBIL 5 PRODUK SECARA ACAK UNTUK DITAMPILKAN DI CAROUSEL
+        $featuredProducts = Product::inRandomOrder()->limit(5)->get();
+
         $initialCartCount = array_sum(array_column(session()->get('cart', []), 'quantity'));
 
-        // Kirim data yang sudah dikelompokkan dan jumlah keranjang ke view 'shop'
-        return view('shop', compact('kategoriProduk', 'initialCartCount'));
+        // KIRIM DATA featuredProducts KE VIEW
+        return view('shop', compact('kategoriProduk', 'initialCartCount', 'featuredProducts'));
+    }
+    public function show($id)
+    {
+        $product = Product::findOrFail($id); // Cari produk berdasarkan ID, jika tidak ketemu akan error 404
+        
+        // Ambil produk lain secara acak sebagai rekomendasi, kecuali produk yang sedang dilihat
+        $relatedProducts = Product::where('id', '!=', $id)->inRandomOrder()->limit(4)->get();
+
+        return view('product-detail', compact('product', 'relatedProducts'));
     }
 }

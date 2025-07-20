@@ -80,7 +80,7 @@
         });
     },
 
-    // Fungsi untuk menambah produk ke keranjang sesi (ini yang dipanggil tombol Tambah)
+    // Fungsi untuk menambah produk ke keranjang sesi (ini yang dipanggil tombol Chekout)
     addToCart: function(productId, qty) { // Menggunakan function() {} untuk kompatibilitas lebih luas
         this.message = ''; // Reset pesan feedback
 
@@ -105,7 +105,7 @@
             if (data.success) {
                 this.cartCount = data.cartCount; // Update cartCount dari respons backend
                 localStorage.setItem('cartCount', data.cartCount); // Simpan ke localStorage untuk FAB
-                console.log('Produk ditambahkan:', data.message);
+                console.log('Produk diChekoutkan:', data.message);
                 window.dispatchEvent(new CustomEvent('cart-updated', { detail: { cartCount: data.cartCount } })); // Emit event ke FAB
             } else {
                 console.error('Gagal menambahkan produk:', data.message);
@@ -129,53 +129,78 @@ class="mb-8">
     <div id="main-splide" class="splide relative w-full mx-auto max-w-4xl mb-6" aria-label="Produk Unggulan Riki Vapor">
         <div class="splide__track rounded-lg shadow-xl border border-gray-700 bg-gray-900 p-6">
             <ul class="splide__list">
-                @php
-                    $featuredProducts = [
-                        [ 'id' => 8, 'nama' => 'HEXOHM V3 Anodized', 'deskripsi' => 'HEXOHM V3 Anodized mod. Pilihan warna hijau, merah, biru, ungu, hitam. Garansi Lifetime.', 'harga' => 950000, 'gambar' => asset('image/pod2.jpg'), 'kategori' => 'Pod' ],
-                        [ 'id' => 1, 'nama' => 'Vape Sakura 5000 Puff', 'deskripsi' => 'Rasa buah segar, cocok untuk pemula.', 'harga' => 150000, 'gambar' => asset('image/pod.jpg'), 'kategori' => 'Pod' ],
-                        [ 'id' => 6, 'nama' => 'SWRL - Blueberry Vanilla Cream', 'deskripsi' => 'Liquid creamy Blueberry Vanilla Cream 60ml.', 'harga' => 140000, 'gambar' => asset('image/liquid5.jpg'), 'kategori' => 'Liquid' ],
-                        [ 'id' => 9, 'nama' => 'Lunar Donut Blueberry Jam', 'deskripsi' => 'E-juice Blueberry Jam dengan tema Donat.', 'harga' => 130000, 'gambar' => asset('image/liquid2.jpg'), 'kategori' => 'Liquid' ],
-                        [ 'id' => 4, 'nama' => 'Ice Cream Series - Rainpop Pelangi.', 'deskripsi' => 'E-liquid Ice Cream Series Rainpop Pelangi.', 'harga' => 110000, 'gambar' => asset('image/liquid3.jpg'), 'kategori' => 'Liquid' ]
-                    ];
-                @endphp
+                
 
-                @foreach($featuredProducts as $product)
-                <li class="splide__slide">
-                    <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
-                        {{-- Gambar Produk (Kiri) --}}
-                        <div class="w-full md:w-1/2 h-64 md:h-80 bg-black rounded-lg flex items-center justify-center overflow-hidden shadow-inner mb-4 md:mb-0">
-                            <img src="{{ $product['gambar'] }}" alt="{{ $product['nama'] }}" class="w-full h-full object-contain p-2">
-                        </div>
-                        
-                        {{-- Detail Produk (Kanan) --}}
-                        <div class="w-full md:w-1/2 text-center md:text-left p-2">
-                            <span class="text-green-400 text-sm font-semibold uppercase mb-1 block">{{ $product['kategori'] }}</span>
-                            <h3 class="text-3xl font-extrabold text-white mb-2">{{ $product['nama'] }}</h3>
-                            <p class="text-gray-300 text-md mb-4 line-clamp-3">{{ $product['deskripsi'] }}</p>
-                            <p class="text-green-400 font-extrabold text-3xl mb-4">Rp {{ number_format($product['harga'], 0, ',', '.') }}</p>
+                 @foreach($featuredProducts as $product)
+            <a href="{{ route('product.show', $product->id) }}" class="splide__slide block cursor-pointer group">
+                <div class="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
+                    {{-- Gambar Produk (Kiri) --}}
+                    <div class="w-full md:w-1/2 h-64 md:h-80 bg-black rounded-lg flex items-center justify-center overflow-hidden shadow-inner mb-4 md:mb-0">
+                        <img src="{{ asset('image/' . $product->gambar) }}" alt="{{ $product->nama }}" class="w-full h-full object-contain p-2 transform group-hover:scale-110 transition-transform duration-300">
+                    </div>
+                    
+                    {{-- Detail Produk (Kanan) --}}
+                    <div class="w-full md:w-1/2 text-center md:text-left p-2">
+                        <span class="text-green-400 text-sm font-semibold uppercase mb-1 block">{{ $product->kategori }}</span>
+                        <h3 class="text-3xl font-extrabold text-white mb-2 group-hover:text-green-400 transition">{{ $product->nama }}</h3>
+                        <p class="text-gray-300 text-md mb-4 line-clamp-3">{{ $product->deskripsi }}</p>
+                        <p class="text-green-400 font-extrabold text-3xl mb-4">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
+                        <div class="mt-4 text-center md:text-left">
+                            <span class="inline-block bg-gray-700 text-white px-5 py-2 rounded-full group-hover:bg-green-600 transition">
+                                Lihat Detail &rarr;
+                            </span>
                         </div>
                     </div>
-                </li>
-                @endforeach
+                </div>
+            </a>
+            @endforeach
             </ul>
         </div>
     </div>
 
     {{-- THUMBNAIL CAROUSEL (KUMPULAN ITEM LAIN DI BAWAH) --}}
+    
     <div id="thumbnail-splide" class="splide relative w-full mx-auto max-w-4xl" aria-label="Thumbnail Produk Unggulan">
         <div class="splide__track">
             <ul class="splide__list">
-                @foreach($featuredProducts as $product)
-                <li class="splide__slide">
-                    <div class="w-24 h-24 bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden cursor-pointer border-2 border-transparent hover:border-green-500 transition-all duration-200">
-                        <img src="{{ $product['gambar'] }}" alt="{{ $product['nama'] }}" class="w-full h-full object-contain p-1">
-                    </div>
-                </li>
-                @endforeach
+                
             </ul>
         </div>
     </div>
+{{-- REKOMENDASI & PRODUK TERLARIS --}}
+<div class="mt-16 mb-12">
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-white">Paling Laris Minggu Ini</h2>
+        <p class="text-gray-400">Produk yang paling banyak dicari oleh pelanggan kami.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        @php
+            // Anda bisa mengganti ini dengan query ke database untuk produk terlaris
+            $rekomendasiProduk = [
+                ['id' => 8, 'nama' => 'HEXOHM V3 Anodized', 'harga' => 950000, 'gambar' => asset('image/pod2.jpg')],
+                ['id' => 1, 'nama' => 'Vape Sakura 5000 Puff', 'harga' => 150000, 'gambar' => asset('image/pod.jpg')],
+                ['id' => 6, 'nama' => 'SWRL - Blueberry Vanilla Cream', 'harga' => 140000, 'gambar' => asset('image/liquid5.jpg')],
+                ['id' => 9, 'nama' => 'Lunar Donut Blueberry Jam', 'harga' => 130000, 'gambar' => asset('image/liquid2.jpg')]
+            ];
+        @endphp
 
+        @foreach($rekomendasiProduk as $produk)
+        <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition duration-300">
+            <div class="relative">
+                <img src="{{ $produk['gambar'] }}" alt="{{ $produk['nama'] }}" class="w-full h-40 object-cover">
+                <div class="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-md">Terlaris!</div>
+            </div>
+            <div class="p-4 text-center">
+                <h3 class="font-semibold text-white h-12">{{ $produk['nama'] }}</h3>
+                <p class="text-green-400 font-bold mt-2">Rp {{ number_format($produk['harga'], 0, ',', '.') }}</p>
+                <button @click="addToCart({{ $produk['id'] }}, 1)" class="mt-4 w-full bg-green-600 text-white text-sm px-3 py-2 rounded-lg hover:bg-green-700 transition">
+                    + Keranjang
+                </button>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
 
     {{-- Nav Kategori --}}
     <div class="flex justify-center flex-wrap gap-4 mt-16 mb-8">
@@ -245,7 +270,7 @@ class="mb-8">
                         @click="addToCart({{ Js::from($item->id) }}, localQuantity)" {{-- Menggunakan Js::from untuk keamanan --}}
                         class="mt-3 bg-green-600 text-white text-xs px-2 py-1 rounded-md hover:bg-green-700 transition duration-200 w-full animation-pulse-on-click"
                     >
-                        Tambah
+                        Chekout
                     </button>
                 </div>
             </div>

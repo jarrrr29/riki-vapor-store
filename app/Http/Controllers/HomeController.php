@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Untuk halaman home, kita hanya me-return view 'home' tanpa data khusus
+        // Hanya menampilkan view 'home' tanpa mengirim data
         return view('home');
     }
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController; // Pastikan ini ada
+use App\Http\Controllers\OrderController;
 use App\Models\Product;
 
 /*
@@ -22,6 +23,9 @@ Route::get('/', [HomeController::class, 'index']);
 
 // Rute untuk halaman Pembelian (Katalog Produk)
 Route::get('/pembelian', [ShopController::class, 'index']);
+// TAMBAHKAN RUTE INI
+// Rute untuk menampilkan halaman detail produk
+Route::get('/product/{id}', [\App\Http\Controllers\ProductController::class, 'show'])->name('product.show');
 
 // Rute untuk halaman Tentang Kami
 Route::get('/tentang', function () {
@@ -32,9 +36,11 @@ Route::get('/tentang', function () {
 Route::get('/kontak', function () {
     return view('contact');
 });
-
+Route::post('/keranjang/clear', [CartController::class, 'clear'])->name('keranjang.clear');
 // Route untuk menambah produk ke keranjang (via AJAX)
 Route::post('/keranjang/tambah/{productId}', [CartController::class, 'tambah'])->name('keranjang.tambah');
+// TAMBAHKAN ROUTE DI BAWAH INI UNTUK MEMPROSES PESANAN
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
 // Route untuk menampilkan halaman keranjang
 Route::get('/keranjang', [CartController::class, 'index'])->name('keranjang.index');
