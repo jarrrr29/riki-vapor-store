@@ -1,7 +1,8 @@
 {
     "version": 2,
+    "framework": null,
     "functions": {
-        "api/entry.php": {
+        "api/index.php": {
             "runtime": "vercel-php@0.6.0"
         }
     },
@@ -12,7 +13,8 @@
         },
         {
             "src": "/(.*)",
-            "dest": "/api/entry.php"
+            "dest": "/api/index.php"
         }
-    ]
+    ],
+    "outputDirectory": "public"
 }
