@@ -1,3 +1,5 @@
+// vite.config.js
+
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
@@ -11,6 +13,6 @@ export default defineConfig({
         tailwindcss(),
     ],
     build: {
-        outDir: "public/build", // <-- TAMBAHKAN BAGIAN INI
+        outDir: "public/build", // <-- WAJIB TAMBAHKAN INI
     },
 });
