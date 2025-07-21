@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,9 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->environment('production')) {
-            $this->app->usePublicPath(base_path('public'));
-        }
+        
     }
 
     /**
@@ -21,6 +20,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        
+        {
+            if ($this->app->environment('production')) {
+                URL::forceScheme('httpshttps');
+            }
+        }
     }
 }
