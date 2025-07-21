@@ -1,24 +1,28 @@
-*.log
+# Ignore environment files
+.env*
+.env.*
+
+# System / IDE files
 .DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
+Thumbs.db
+.idea/
+.vscode/
+.fleet/
+
+# Laravel-specific ignored files
+/vendor/
+/node_modules/
 .phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/publi/index.php
-/public/hot
-/public/storage
+.phpactor.json
+.phpunit.cache
+
+# Laravel storage exclusions
 /storage/*.key
 /storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
+/storage/logs/*
+!/storage/logs/.gitkeep
+/public/storage
+/public/hot
+
+# Build artifacts (optional)
+*.log

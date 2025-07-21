@@ -17,11 +17,7 @@ use App\Models\Product;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// ... (kode lainnya)
 
-// --- AKHIR ROUTE SEMENTARA ---
-
-// Test commit untuk Vercel
 // Rute untuk halaman utama (Home)
 Route::get('/', [HomeController::class, 'index']);
 
