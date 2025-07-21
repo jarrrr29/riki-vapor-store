@@ -1,11 +1,19 @@
 {
     "version": 2,
     "framework": null,
-    "functions": {
-        "api/index.php": {
-            "runtime": "vercel-php@0.6.0"
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "buildCommand": "npm install && npm run build"
+            }
+        },
+        {
+            "src": "api/index.php",
+            "use": "vercel-php@0.6.0"
         }
-    },
+    ],
     "routes": [
         {
             "src": "/build/(.*)",
